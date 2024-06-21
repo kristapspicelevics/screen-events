@@ -1,4 +1,4 @@
 export interface ScreenEventsPlugin {
   echo(options: { value: string }): Promise<{ value: string }>;
-  isScreenOn(): void;
+  isScreenOn(): Promise<void>;
 }
