@@ -17,6 +17,6 @@
     "target": "es2017",
     "typeRoots": ["./node_modules/@types", "./types"]
   },
-  "include": ["src/**/*", "types/**/*"],
+  "include": ["types/**/*"],
   "files": ["src/index.ts"]
 }
