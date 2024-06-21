@@ -15,8 +15,6 @@
     "sourceMap": true,
     "strict": true,
     "target": "es2017",
-    "typeRoots": ["./node_modules/@types", "./types"]
   },
-  "include": ["screen-events.d.ts","src"],
-  "files": ["screen-events.d.ts"]
+  "files": ["src/index.ts"]
 }
