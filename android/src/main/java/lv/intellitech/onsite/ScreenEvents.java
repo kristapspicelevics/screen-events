@@ -8,4 +8,10 @@ public class ScreenEvents {
         Log.i("Echo", value);
         return value;
     }
+
+    public Boolean isScreenOn(Boolean value) {
+        Log.i("Echo", String.valueOf(value));
+        return value;
+    }
+
 }
