@@ -16,7 +16,6 @@
     "ScreenEvents.podspec",
     "dist",
     "src",
-    "screen-events.d.ts",
     "README.md"
   ],
   "author": "kristapspicelevics",
