@@ -19,7 +19,7 @@
   },
   "include": [
     "src",
-    "src/screen-events.d.ts",
+    "src/index.d.ts",
   ],
   "files": ["src/index.ts"]
 }
