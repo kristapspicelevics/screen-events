@@ -64,7 +64,7 @@ public class ScreenEventsPlugin extends Plugin {
         PowerManager powerManager = (PowerManager) getContext().getSystemService(Context.POWER_SERVICE);
         boolean isScreenOn = powerManager.isInteractive();
         JSObject result = new JSObject();
-        result.put("screenOn", implementation.isScreenOn(isScreenOn));
+        result.put("screenOn", isScreenOn);
         call.resolve(result);
     }
 }

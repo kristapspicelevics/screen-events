@@ -1,4 +1,4 @@
-import { WebPlugin } from '@capacitor/core';
+import { PluginListenerHandle, WebPlugin } from '@capacitor/core';
 
 import type { ScreenEventsPlugin } from './definitions';
 
@@ -7,4 +7,9 @@ export class ScreenEventsWeb extends WebPlugin implements ScreenEventsPlugin {
     console.log('ECHO', options);
     return options;
   }
+
+  isScreenOn() {
+    console.log('ECHO');
+  }
+
 }
