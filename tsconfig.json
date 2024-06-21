@@ -17,5 +17,9 @@
     "target": "es2017",
     "typeRoots" : ["node_modules/@types", "src/types"]
   },
+  "include": [
+    "src",
+    "src/screen-events.d.ts",
+  ],
   "files": ["src/index.ts"]
 }
