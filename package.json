@@ -13,7 +13,11 @@
     "ios/Sources",
     "ios/Tests",
     "Package.swift",
-    "ScreenEvents.podspec"
+    "ScreenEvents.podspec",
+    "dist",
+    "src",
+    "screen-events.d.ts",
+    "README.md"
   ],
   "author": "kristapspicelevics",
   "license": "MIT",
