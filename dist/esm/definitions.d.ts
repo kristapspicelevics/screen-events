@@ -4,4 +4,12 @@ export interface ScreenEventsPlugin {
     }): Promise<{
         value: string;
     }>;
+    /**
+    * Checks if screen is on
+    *
+    * @since 0.0.1
+    */
+    isScreenOn(): Promise<{
+        result: boolean;
+    }>;
 }

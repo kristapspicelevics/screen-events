@@ -13,6 +13,9 @@ class ScreenEventsWeb extends core.WebPlugin {
         console.log('ECHO', options);
         return options;
     }
+    isScreenOn() {
+        throw new Error('Method not implemented.');
+    }
 }
 
 var web = /*#__PURE__*/Object.freeze({

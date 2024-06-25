@@ -9,9 +9,4 @@ public class ScreenEvents {
         return value;
     }
 
-    public Boolean isScreenOn(Boolean value) {
-        Log.i("Echo", String.valueOf(value));
-        return value;
-    }
-
 }

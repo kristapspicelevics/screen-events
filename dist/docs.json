@@ -20,6 +20,16 @@
         "docs": "",
         "complexTypes": [],
         "slug": "echo"
+      },
+      {
+        "name": "isScreenOn",
+        "signature": "() => Promise<{ result: boolean }>",
+        "parameters": [],
+        "returns": "Promise<{ result: boolean }>",
+        "tags": [],
+        "docs": "",
+        "complexTypes": [],
+        "slug": "isscreenon"
       }
     ],
     "properties": []

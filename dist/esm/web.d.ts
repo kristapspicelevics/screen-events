@@ -6,4 +6,7 @@ export declare class ScreenEventsWeb extends WebPlugin implements ScreenEventsPl
     }): Promise<{
         value: string;
     }>;
+    isScreenOn(): Promise<{
+        result: boolean;
+    }>;
 }

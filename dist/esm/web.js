@@ -4,5 +4,8 @@ export class ScreenEventsWeb extends WebPlugin {
         console.log('ECHO', options);
         return options;
     }
+    isScreenOn() {
+        throw new Error('Method not implemented.');
+    }
 }
 //# sourceMappingURL=web.js.map
