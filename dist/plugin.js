@@ -10,7 +10,7 @@ var capacitorScreenEvents = (function (exports, core) {
             console.log('ECHO', options);
             return options;
         }
-        isScreenOn() {
+        async isScreenOn() {
             throw new Error('Method not implemented.');
         }
     }

@@ -13,7 +13,7 @@ class ScreenEventsWeb extends core.WebPlugin {
         console.log('ECHO', options);
         return options;
     }
-    isScreenOn() {
+    async isScreenOn() {
         throw new Error('Method not implemented.');
     }
 }

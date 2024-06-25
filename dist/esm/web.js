@@ -4,7 +4,7 @@ export class ScreenEventsWeb extends WebPlugin {
         console.log('ECHO', options);
         return options;
     }
-    isScreenOn() {
+    async isScreenOn() {
         throw new Error('Method not implemented.');
     }
 }

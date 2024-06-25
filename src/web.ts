@@ -9,7 +9,7 @@ export class ScreenEventsWeb extends WebPlugin implements ScreenEventsPlugin {
     return options;
   }
   
-  isScreenOn(): Promise<{ result: boolean; }> {
+  async isScreenOn(): Promise<{ result: boolean; }> {
     throw new Error('Method not implemented.');
   }
 
