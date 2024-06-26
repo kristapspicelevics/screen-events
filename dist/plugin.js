@@ -13,6 +13,9 @@ var capacitorScreenEvents = (function (exports, core) {
         async isScreenOn() {
             throw new Error('Method not implemented.');
         }
+        async getUsageStats() {
+            throw new Error('Method not implemented.');
+        }
     }
 
     var web = /*#__PURE__*/Object.freeze({

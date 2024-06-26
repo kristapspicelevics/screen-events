@@ -9,4 +9,7 @@ export declare class ScreenEventsWeb extends WebPlugin implements ScreenEventsPl
     isScreenOn(): Promise<{
         result: boolean;
     }>;
+    getUsageStats(): Promise<{
+        result: string;
+    }>;
 }

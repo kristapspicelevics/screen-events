@@ -1,15 +1,22 @@
 package lv.intellitech.onsite;
 
+import android.app.usage.UsageStats;
+import android.app.usage.UsageStatsManager;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.PowerManager;
+
+import com.getcapacitor.JSArray;
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
+
+import java.util.List;
 
 @CapacitorPlugin(name = "ScreenEvents")
 public class ScreenEventsPlugin extends Plugin {
@@ -66,5 +73,28 @@ public class ScreenEventsPlugin extends Plugin {
         JSObject result = new JSObject();
         result.put("screenOn", isScreenOn);
         call.resolve(result);
+    }
+
+    @PluginMethod
+    public void getUsageStats(PluginCall call) {
+        UsageStatsManager usageStatsManager = (UsageStatsManager) getContext().getSystemService(Context.USAGE_STATS_SERVICE);
+
+        long endTime = System.currentTimeMillis();
+        long startTime = endTime - 24 * 60 * 60 * 1000; // Last 24 hours
+
+        List<UsageStats> usageStatsList = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime);
+
+        JSArray results = new JSArray();
+
+        for (UsageStats stats : usageStatsList) {
+            JSObject stat = new JSObject();
+            stat.put("packageName", stats.getPackageName());
+            stat.put("totalTimeInForeground", stats.getTotalTimeInForeground());
+            results.put(stat);
+        }
+
+        JSObject ret = new JSObject();
+        ret.put("usageStats", results);
+        call.resolve(ret);
     }
 }

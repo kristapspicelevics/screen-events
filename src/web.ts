@@ -13,5 +13,8 @@ export class ScreenEventsWeb extends WebPlugin implements ScreenEventsPlugin {
     throw new Error('Method not implemented.');
   }
 
+  async getUsageStats(): Promise<{ result: string; }> {
+    throw new Error('Method not implemented.');
+  }
 
 }
