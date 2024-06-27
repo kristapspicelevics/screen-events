@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.provider.Settings;
 import android.os.PowerManager;
 
 import com.getcapacitor.JSArray;
@@ -82,7 +83,7 @@ public class ScreenEventsPlugin extends Plugin {
             openUsageAccessSettings();
             return;
         }
-        
+
         UsageStatsManager usageStatsManager = (UsageStatsManager) getContext().getSystemService(Context.USAGE_STATS_SERVICE);
 
         long endTime = System.currentTimeMillis();
