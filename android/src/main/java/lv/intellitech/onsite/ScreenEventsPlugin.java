@@ -152,20 +152,18 @@ public class ScreenEventsPlugin extends Plugin {
 
         while (usageEvents.hasNextEvent()) {
             usageEvents.getNextEvent(event);
-            //if (event.getPackageName().equals(packageName)) {
-                if (event.getEventType() == UsageEvents.Event.MOVE_TO_FOREGROUND) {
-                    lastEventTime = event.getTimeStamp();
-                } else if (event.getEventType() == UsageEvents.Event.MOVE_TO_BACKGROUND && lastEventTime != null) {
-                    JSObject stat = new JSObject();
-                    stat.put("packageName", event.getPackageName());
-                    stat.put("startTime", lastEventTime);
-                    stat.put("endTime", event.getTimeStamp());
-                    stat.put("duration", event.getTimeStamp() - lastEventTime);
-                    results.put(stat);
-                    totalForegroundTime += event.getTimeStamp() - lastEventTime;
-                    lastEventTime = null;
-                }
-            //}
+            if (event.getEventType() == UsageEvents.Event.MOVE_TO_FOREGROUND) {
+                lastEventTime = event.getTimeStamp();
+            } else if (event.getEventType() == UsageEvents.Event.MOVE_TO_BACKGROUND && lastEventTime != null) {
+                JSObject stat = new JSObject();
+                stat.put("packageName", event.getPackageName());
+                stat.put("startTime", lastEventTime);
+                stat.put("endTime", event.getTimeStamp());
+                stat.put("duration", event.getTimeStamp() - lastEventTime);
+                results.put(stat);
+                totalForegroundTime += event.getTimeStamp() - lastEventTime;
+                lastEventTime = null;
+            }
         }
 
         JSObject ret = new JSObject();
