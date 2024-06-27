@@ -97,7 +97,7 @@ public class ScreenEventsPlugin extends Plugin {
         // long endTime = System.currentTimeMillis();
         // long startTime = endTime - 24 * 60 * 60 * 1000; // Last 24 hours
 
-        List<UsageStats> usageStatsList = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime);
+        List<UsageStats> usageStatsList = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST, startTime, endTime);
 
         JSArray results = new JSArray();
 
