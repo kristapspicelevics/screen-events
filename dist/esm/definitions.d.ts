@@ -12,7 +12,10 @@ export interface ScreenEventsPlugin {
     isScreenOn(): Promise<{
         result: boolean;
     }>;
-    getUsageStats(): Promise<{
+    getUsageStats(options: {
+        startTime: number;
+        endTime: number;
+    }): Promise<{
         result: string;
     }>;
 }

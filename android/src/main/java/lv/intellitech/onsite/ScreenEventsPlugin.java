@@ -84,10 +84,18 @@ public class ScreenEventsPlugin extends Plugin {
             return;
         }
 
+        Long startTime = call.getLong("startTime");
+        Long endTime = call.getLong("endTime");
+
+        if (startTime == null || endTime == null) {
+            call.reject("Must provide both startTime and endTime");
+            return;
+        }
+
         UsageStatsManager usageStatsManager = (UsageStatsManager) getContext().getSystemService(Context.USAGE_STATS_SERVICE);
 
-        long endTime = System.currentTimeMillis();
-        long startTime = endTime - 24 * 60 * 60 * 1000; // Last 24 hours
+        // long endTime = System.currentTimeMillis();
+        // long startTime = endTime - 24 * 60 * 60 * 1000; // Last 24 hours
 
         List<UsageStats> usageStatsList = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime);
 
