@@ -77,6 +77,12 @@ public class ScreenEventsPlugin extends Plugin {
 
     @PluginMethod
     public void getUsageStats(PluginCall call) {
+        if (!hasUsageStatsPermission()) {
+            call.reject("Permission required");
+            openUsageAccessSettings();
+            return;
+        }
+
         UsageStatsManager usageStatsManager = (UsageStatsManager) getContext().getSystemService(Context.USAGE_STATS_SERVICE);
 
         long endTime = System.currentTimeMillis();
@@ -97,4 +103,18 @@ public class ScreenEventsPlugin extends Plugin {
         ret.put("usageStats", results);
         call.resolve(ret);
     }
+
+    private boolean hasUsageStatsPermission() {
+        UsageStatsManager usageStatsManager = (UsageStatsManager) getContext().getSystemService(Context.USAGE_STATS_SERVICE);
+        long endTime = System.currentTimeMillis();
+        long startTime = endTime - 1000 * 60;
+        List<UsageStats> stats = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime);
+        return (stats != null && !stats.isEmpty());
+    }
+
+    private void openUsageAccessSettings() {
+        Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+        getContext().startActivity(intent);
+    }
+
 }
