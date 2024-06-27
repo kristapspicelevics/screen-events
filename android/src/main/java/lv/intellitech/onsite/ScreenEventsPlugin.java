@@ -134,10 +134,10 @@ public class ScreenEventsPlugin extends Plugin {
 
         Long startTime = call.getLong("startTime");
         Long endTime = call.getLong("endTime");
-        String packageName = call.getString("packageName");
+        //String packageName = call.getString("packageName");
 
-        if (startTime == null || endTime == null || packageName == null) {
-            call.reject("Must provide startTime, endTime, and packageName");
+        if (startTime == null || endTime == null) {
+            call.reject("Must provide startTime, endTime");
             return;
         }
 
@@ -152,7 +152,7 @@ public class ScreenEventsPlugin extends Plugin {
 
         while (usageEvents.hasNextEvent()) {
             usageEvents.getNextEvent(event);
-            if (event.getPackageName().equals(packageName)) {
+            //if (event.getPackageName().equals(packageName)) {
                 if (event.getEventType() == UsageEvents.Event.MOVE_TO_FOREGROUND) {
                     lastEventTime = event.getTimeStamp();
                 } else if (event.getEventType() == UsageEvents.Event.MOVE_TO_BACKGROUND && lastEventTime != null) {
@@ -165,7 +165,7 @@ public class ScreenEventsPlugin extends Plugin {
                     totalForegroundTime += event.getTimeStamp() - lastEventTime;
                     lastEventTime = null;
                 }
-            }
+            //}
         }
 
         JSObject ret = new JSObject();
