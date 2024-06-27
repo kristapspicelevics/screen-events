@@ -1,6 +1,7 @@
 package lv.intellitech.onsite;
 
 import android.app.usage.UsageStats;
+import android.app.usage.UsageEvents;
 import android.app.usage.UsageStatsManager;
 
 import android.content.BroadcastReceiver;
@@ -84,42 +85,74 @@ public class ScreenEventsPlugin extends Plugin {
             return;
         }
 
-        Long startTime = call.getLong("startTime");
-        Long endTime = call.getLong("endTime");
+        // Long startTime = call.getLong("startTime");
+        // Long endTime = call.getLong("endTime");
 
-        if (startTime == null || endTime == null) {
-            call.reject("Must provide both startTime and endTime");
-            return;
-        }
+        // if (startTime == null || endTime == null) {
+        //     call.reject("Must provide both startTime and endTime");
+        //     return;
+        // }
+
+        // UsageStatsManager usageStatsManager = (UsageStatsManager) getContext().getSystemService(Context.USAGE_STATS_SERVICE);
+
+        // // long endTime = System.currentTimeMillis();
+        // // long startTime = endTime - 24 * 60 * 60 * 1000; // Last 24 hours
+
+        // List<UsageStats> usageStatsList = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST, startTime, endTime);
+
+        // JSArray results = new JSArray();
+
+        // if (usageStatsList != null) {
+        //     for (UsageStats stats : usageStatsList) {
+        //         if (stats.getTotalTimeInForeground() > 0) {
+        //             JSObject stat = new JSObject();
+        //             stat.put("packageName", stats.getPackageName());
+        //             stat.put("totalTimeInForeground", stats.getTotalTimeInForeground());
+        //             stat.put("firstTimeStamp", stats.getFirstTimeStamp());
+        //             stat.put("lastTimeStamp", stats.getLastTimeStamp());
+        //             stat.put("lastTimeUsed", stats.getLastTimeUsed());
+        //             stat.put("totalTimeVisible", stats.getTotalTimeVisible());
+        //             stat.put("lastTimeVisible", stats.getLastTimeVisible());
+        //             stat.put("totalTimeForegroundServiceUsed", stats.getTotalTimeForegroundServiceUsed());
+        //             results.put(stat);
+        //         }
+        //     }
+        // }
+
+        // JSObject ret = new JSObject();
+        // ret.put("usageStats", results);
+        // call.resolve(ret);
 
         UsageStatsManager usageStatsManager = (UsageStatsManager) getContext().getSystemService(Context.USAGE_STATS_SERVICE);
 
-        // long endTime = System.currentTimeMillis();
-        // long startTime = endTime - 24 * 60 * 60 * 1000; // Last 24 hours
-
-        List<UsageStats> usageStatsList = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST, startTime, endTime);
+        UsageEvents usageEvents = usageStatsManager.queryEvents(startTime, endTime);
+        UsageEvents.Event event = new UsageEvents.Event();
 
         JSArray results = new JSArray();
+        Long lastEventTime = null;
+        Long totalForegroundTime = 0L;
 
-        if (usageStatsList != null) {
-            for (UsageStats stats : usageStatsList) {
-                if (stats.getTotalTimeInForeground() > 0) {
+        while (usageEvents.hasNextEvent()) {
+            usageEvents.getNextEvent(event);
+            if (event.getPackageName().equals(packageName)) {
+                if (event.getEventType() == UsageEvents.Event.MOVE_TO_FOREGROUND) {
+                    lastEventTime = event.getTimeStamp();
+                } else if (event.getEventType() == UsageEvents.Event.MOVE_TO_BACKGROUND && lastEventTime != null) {
                     JSObject stat = new JSObject();
-                    stat.put("packageName", stats.getPackageName());
-                    stat.put("totalTimeInForeground", stats.getTotalTimeInForeground());
-                    stat.put("firstTimeStamp", stats.getFirstTimeStamp());
-                    stat.put("lastTimeStamp", stats.getLastTimeStamp());
-                    stat.put("lastTimeUsed", stats.getLastTimeUsed());
-                    stat.put("totalTimeVisible", stats.getTotalTimeVisible());
-                    stat.put("lastTimeVisible", stats.getLastTimeVisible());
-                    stat.put("totalTimeForegroundServiceUsed", stats.getTotalTimeForegroundServiceUsed());
+                    stat.put("packageName", event.getPackageName());
+                    stat.put("startTime", lastEventTime);
+                    stat.put("endTime", event.getTimeStamp());
+                    stat.put("duration", event.getTimeStamp() - lastEventTime);
                     results.put(stat);
+                    totalForegroundTime += event.getTimeStamp() - lastEventTime;
+                    lastEventTime = null;
                 }
             }
         }
 
         JSObject ret = new JSObject();
-        ret.put("usageStats", results);
+        ret.put("usageEvents", results);
+        ret.put("totalForegroundTime", totalForegroundTime); // in milliseconds
         call.resolve(ret);
     }
 
