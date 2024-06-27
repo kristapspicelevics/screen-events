@@ -19,4 +19,10 @@ export class ScreenEventsWeb extends WebPlugin implements ScreenEventsPlugin {
     throw new Error('Method not implemented.');
   }
 
+  async getUsageEvents(options: {startTime: number, endTime: number}): Promise<{ result: string; }> {
+    console.log('ECHO', options);
+    //return options;
+    throw new Error('Method not implemented.');
+  }
+
 }

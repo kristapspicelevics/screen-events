@@ -18,4 +18,10 @@ export interface ScreenEventsPlugin {
     }): Promise<{
         result: string;
     }>;
+    getUsageEvents(options: {
+        startTime: number;
+        endTime: number;
+    }): Promise<{
+        result: string;
+    }>;
 }

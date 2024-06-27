@@ -21,6 +21,11 @@ class ScreenEventsWeb extends core.WebPlugin {
         //return options;
         throw new Error('Method not implemented.');
     }
+    async getUsageEvents(options) {
+        console.log('ECHO', options);
+        //return options;
+        throw new Error('Method not implemented.');
+    }
 }
 
 var web = /*#__PURE__*/Object.freeze({

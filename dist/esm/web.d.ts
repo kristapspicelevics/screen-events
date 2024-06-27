@@ -15,4 +15,10 @@ export declare class ScreenEventsWeb extends WebPlugin implements ScreenEventsPl
     }): Promise<{
         result: string;
     }>;
+    getUsageEvents(options: {
+        startTime: number;
+        endTime: number;
+    }): Promise<{
+        result: string;
+    }>;
 }

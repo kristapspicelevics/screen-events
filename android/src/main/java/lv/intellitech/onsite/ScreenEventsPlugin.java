@@ -85,6 +85,62 @@ public class ScreenEventsPlugin extends Plugin {
             return;
         }
 
+        Long startTime = call.getLong("startTime");
+        Long endTime = call.getLong("endTime");
+
+        if (startTime == null || endTime == null) {
+            call.reject("Must provide both startTime and endTime");
+            return;
+        }
+
+        UsageStatsManager usageStatsManager = (UsageStatsManager) getContext().getSystemService(Context.USAGE_STATS_SERVICE);
+
+        // long endTime = System.currentTimeMillis();
+        // long startTime = endTime - 24 * 60 * 60 * 1000; // Last 24 hours
+
+        List<UsageStats> usageStatsList = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST, startTime, endTime);
+
+        JSArray results = new JSArray();
+
+        if (usageStatsList != null) {
+            for (UsageStats stats : usageStatsList) {
+                if (stats.getTotalTimeInForeground() > 0) {
+                    JSObject stat = new JSObject();
+                    stat.put("packageName", stats.getPackageName());
+                    stat.put("totalTimeInForeground", stats.getTotalTimeInForeground());
+                    stat.put("firstTimeStamp", stats.getFirstTimeStamp());
+                    stat.put("lastTimeStamp", stats.getLastTimeStamp());
+                    stat.put("lastTimeUsed", stats.getLastTimeUsed());
+                    stat.put("totalTimeVisible", stats.getTotalTimeVisible());
+                    stat.put("lastTimeVisible", stats.getLastTimeVisible());
+                    stat.put("totalTimeForegroundServiceUsed", stats.getTotalTimeForegroundServiceUsed());
+                    results.put(stat);
+                }
+            }
+        }
+
+        JSObject ret = new JSObject();
+        ret.put("usageStats", results);
+        call.resolve(ret);
+    }
+
+    @PluginMethod
+    public void getUsageEvents(PluginCall call) {
+        if (!hasUsageStatsPermission()) {
+            call.reject("Permission required");
+            openUsageAccessSettings();
+            return;
+        }
+
+        Long startTime = call.getLong("startTime");
+        Long endTime = call.getLong("endTime");
+        String packageName = call.getString("packageName");
+
+        if (startTime == null || endTime == null || packageName == null) {
+            call.reject("Must provide startTime, endTime, and packageName");
+            return;
+        }
+
         UsageStatsManager usageStatsManager = (UsageStatsManager) getContext().getSystemService(Context.USAGE_STATS_SERVICE);
 
         UsageEvents usageEvents = usageStatsManager.queryEvents(startTime, endTime);
