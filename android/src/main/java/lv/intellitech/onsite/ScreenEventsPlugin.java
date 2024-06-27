@@ -107,6 +107,12 @@ public class ScreenEventsPlugin extends Plugin {
                     JSObject stat = new JSObject();
                     stat.put("packageName", stats.getPackageName());
                     stat.put("totalTimeInForeground", stats.getTotalTimeInForeground());
+                    stat.put("firstTimeStamp", stats.getFirstTimeStamp());
+                    stat.put("lastTimeStamp", stats.getLastTimeStamp());
+                    stat.put("lastTimeUsed", stats.getLastTimeUsed());
+                    stat.put("totalTimeVisible", stats.getTotalTimeVisible());
+                    stat.put("lastTimeVisible", stats.getLastTimeVisible());
+                    stat.put("totalTimeForegroundServiceUsed", stats.getTotalTimeForegroundServiceUsed());
                     results.put(stat);
                 }
             }
