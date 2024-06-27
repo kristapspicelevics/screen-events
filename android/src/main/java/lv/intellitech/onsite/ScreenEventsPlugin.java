@@ -82,7 +82,7 @@ public class ScreenEventsPlugin extends Plugin {
             openUsageAccessSettings();
             return;
         }
-
+        
         UsageStatsManager usageStatsManager = (UsageStatsManager) getContext().getSystemService(Context.USAGE_STATS_SERVICE);
 
         long endTime = System.currentTimeMillis();
@@ -92,11 +92,15 @@ public class ScreenEventsPlugin extends Plugin {
 
         JSArray results = new JSArray();
 
-        for (UsageStats stats : usageStatsList) {
-            JSObject stat = new JSObject();
-            stat.put("packageName", stats.getPackageName());
-            stat.put("totalTimeInForeground", stats.getTotalTimeInForeground());
-            results.put(stat);
+        if (usageStatsList != null) {
+            for (UsageStats stats : usageStatsList) {
+                if (stats.getTotalTimeInForeground() > 0) {
+                    JSObject stat = new JSObject();
+                    stat.put("packageName", stats.getPackageName());
+                    stat.put("totalTimeInForeground", stats.getTotalTimeInForeground());
+                    results.put(stat);
+                }
+            }
         }
 
         JSObject ret = new JSObject();
@@ -114,6 +118,7 @@ public class ScreenEventsPlugin extends Plugin {
 
     private void openUsageAccessSettings() {
         Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         getContext().startActivity(intent);
     }
 
