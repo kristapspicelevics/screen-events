@@ -3,7 +3,7 @@ import PackageDescription
 
 let package = Package(
     name: "ScreenEvents",
-    platforms: [.iOS(.v12)],
+    platforms: [.iOS(.v13)],
     products: [
         .library(
             name: "ScreenEvents",
