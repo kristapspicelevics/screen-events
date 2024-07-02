@@ -24,5 +24,4 @@ export class ScreenEventsWeb extends WebPlugin implements ScreenEventsPlugin {
     //return options;
     throw new Error('Method not implemented.');
   }
-
 }

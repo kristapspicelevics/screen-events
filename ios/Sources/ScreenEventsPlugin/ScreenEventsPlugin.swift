@@ -22,41 +22,26 @@ public class ScreenEventsPlugin: CAPPlugin, CAPBridgedPlugin {
         ])
     }
 
-    @objc func getUsageEvents(_ call: CAPPluginCall) {
-        let startDate = call.getString("startDate") ?? ""
-        let endDate = call.getString("endDate") ?? ""
+    private var isScreenOn = true
 
-        // Assuming you have date strings in the correct format
-        guard let start = ISO8601DateFormatter().date(from: startDate),
-              let end = ISO8601DateFormatter().date(from: endDate) else {
-            call.reject("Invalid date format")
-            return
-        }
+    override public func load() {
+        NotificationCenter.default.addObserver(self, selector: #selector(screenStateDidChange(_:)), name: UIScreen.didConnectNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(screenStateDidChange(_:)), name: UIScreen.didDisconnectNotification, object: nil)
+    }
 
-        // Fetch DeviceActivity data
-        let activityQuery = DeviceActivityDailyReportQuery(from: start, to: end)
-        
-        let store = DeviceActivityCenter.current
-        
-        store.query(activityQuery) { result in
-            switch result {
-            case .success(let report):
-                var usageData = [[String: Any]]()
-                
-                for (category, data) in report {
-                    var categoryData = [String: Any]()
-                    categoryData["category"] = category.rawValue
-                    categoryData["totalTime"] = data.totalTime // Assuming you have total time in seconds
-                    usageData.append(categoryData)
-                }
-                
-                call.resolve([
-                    "usageData": usageData
-                ])
-                
-            case .failure(let error):
-                call.reject("Failed to retrieve data: \(error.localizedDescription)")
-            }
+    @objc private func screenStateDidChange(_ notification: Notification) {
+        if notification.name == UIScreen.didConnectNotification {
+            isScreenOn = true
+            notifyListeners("screenOn", data: [:])
+        } else if notification.name == UIScreen.didDisconnectNotification {
+            isScreenOn = false
+            notifyListeners("screenOff", data: [:])
         }
+    }
+
+    @objc func isScreenOn(_ call: CAPPluginCall) {
+        call.resolve([
+            "screenOn": isScreenOn
+        ])
     }
 }
