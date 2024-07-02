@@ -1,3 +1,4 @@
+import { PluginListenerHandle } from "@capacitor/core";
 export interface ScreenEventsPlugin {
     echo(options: {
         value: string;
@@ -24,4 +25,5 @@ export interface ScreenEventsPlugin {
     }): Promise<{
         result: string;
     }>;
+    addListener(eventName: 'screenOn' | 'screenOff', listenerFunc: () => void): Promise<PluginListenerHandle> & PluginListenerHandle;
 }
