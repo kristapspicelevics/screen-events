@@ -17,4 +17,8 @@ export interface ScreenEventsPlugin {
   addListener(eventName: 'screenOn' | 'screenOff', listenerFunc: () => void): Promise<PluginListenerHandle> & PluginListenerHandle;
 
   checkPermissions(): Promise<{ result: boolean }>;
+
+  start(): Promise<{ result: boolean }>;
+
+  stop(): Promise<{ result: boolean }>;
 }

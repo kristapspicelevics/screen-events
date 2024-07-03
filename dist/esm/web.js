@@ -20,5 +20,11 @@ export class ScreenEventsWeb extends WebPlugin {
     async checkPermissions() {
         throw new Error('Method not implemented.');
     }
+    async start() {
+        throw new Error('Method not implemented.');
+    }
+    async stop() {
+        throw new Error('Method not implemented.');
+    }
 }
 //# sourceMappingURL=web.js.map

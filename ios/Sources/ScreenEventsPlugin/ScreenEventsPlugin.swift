@@ -1,6 +1,7 @@
 import Foundation
 import Capacitor
 import DeviceActivity
+import BackgroundTasks
 
 /**
  * Please read the Capacitor iOS Plugin Development Guide
@@ -43,5 +44,34 @@ public class ScreenEventsPlugin: CAPPlugin, CAPBridgedPlugin {
         call.resolve([
             "screenOn": isScreenOn
         ])
+    }
+
+    @objc func start(_ call: CAPPluginCall) {
+        BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.yourcompany.backgroundkeepalive", using: nil) { task in
+            self.handleAppRefresh(task: task as! BGAppRefreshTask)
+        }
+
+        scheduleAppRefresh()
+        call.resolve()
+    }
+
+    @objc func stop(_ call: CAPPluginCall) {
+        BGTaskScheduler.shared.cancelAllTaskRequests()
+        call.resolve()
+    }
+
+    func scheduleAppRefresh() {
+        let request = BGAppRefreshTaskRequest(identifier: "lv.intellitech.onsite")
+        request.earliestBeginDate = Date(timeIntervalSinceNow: 15 * 60) // 15 minutes from now
+        do {
+            try BGTaskScheduler.shared.submit(request)
+        } catch {
+            print("Could not schedule app refresh: \(error)")
+        }
+    }
+
+    func handleAppRefresh(task: BGAppRefreshTask) {
+        scheduleAppRefresh()
+        task.setTaskCompleted(success: true)
     }
 }
