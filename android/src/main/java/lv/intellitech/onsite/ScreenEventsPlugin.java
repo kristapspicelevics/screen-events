@@ -126,11 +126,6 @@ public class ScreenEventsPlugin extends Plugin {
 
     @PluginMethod
     public void getUsageEvents(PluginCall call) {
-        if (!hasUsageStatsPermission()) {
-            call.reject("Permission required");
-            openUsageAccessSettings();
-            return;
-        }
 
         Long startTime = call.getLong("startTime");
         Long endTime = call.getLong("endTime");
@@ -170,6 +165,15 @@ public class ScreenEventsPlugin extends Plugin {
         ret.put("usageEvents", results);
         ret.put("totalForegroundTime", totalForegroundTime); // in milliseconds
         call.resolve(ret);
+    }
+
+    @PluginMethod
+    public void checkPermissions(PluginCall call) {
+        if (!hasUsageStatsPermission()) {
+            call.reject("Permission required");
+            openUsageAccessSettings();
+            return;
+        }
     }
 
     private boolean hasUsageStatsPermission() {

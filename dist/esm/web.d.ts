@@ -21,4 +21,7 @@ export declare class ScreenEventsWeb extends WebPlugin implements ScreenEventsPl
     }): Promise<{
         result: string;
     }>;
+    checkPermissions(): Promise<{
+        result: boolean;
+    }>;
 }
