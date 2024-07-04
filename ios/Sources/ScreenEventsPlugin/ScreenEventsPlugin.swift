@@ -46,22 +46,33 @@ public class ScreenEventsPlugin: CAPPlugin, CAPBridgedPlugin {
         ])
     }
 
-    @objc func start(_ call: CAPPluginCall) {
-        BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.yourcompany.backgroundkeepalive", using: nil) { task in
-            self.handleAppRefresh(task: task as! BGAppRefreshTask)
-        }
+    private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
 
-        scheduleAppRefresh()
+    @objc func start(_ call: CAPPluginCall) {
+        if #available(iOS 13.0, *) {
+            BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.yourcompany.backgroundkeepalive", using: nil) { task in
+                self.handleAppRefresh(task: task as! BGAppRefreshTask)
+            }
+            scheduleAppRefresh()
+        } else {
+            // For iOS 12 and below
+            self.startLegacyBackgroundTask()
+        }
         call.resolve()
     }
 
     @objc func stop(_ call: CAPPluginCall) {
-        BGTaskScheduler.shared.cancelAllTaskRequests()
+        if #available(iOS 13.0, *) {
+            BGTaskScheduler.shared.cancelAllTaskRequests()
+        } else {
+            self.endLegacyBackgroundTask()
+        }
         call.resolve()
     }
 
+    @available(iOS 13.0, *)
     func scheduleAppRefresh() {
-        let request = BGAppRefreshTaskRequest(identifier: "lv.intellitech.onsite")
+        let request = BGAppRefreshTaskRequest(identifier: "com.yourcompany.backgroundkeepalive")
         request.earliestBeginDate = Date(timeIntervalSinceNow: 15 * 60) // 15 minutes from now
         do {
             try BGTaskScheduler.shared.submit(request)
@@ -70,8 +81,40 @@ public class ScreenEventsPlugin: CAPPlugin, CAPBridgedPlugin {
         }
     }
 
+    @available(iOS 13.0, *)
     func handleAppRefresh(task: BGAppRefreshTask) {
         scheduleAppRefresh()
         task.setTaskCompleted(success: true)
+    }
+
+    func startLegacyBackgroundTask() {
+        backgroundTask = UIApplication.shared.beginBackgroundTask {
+            // Clean up code if the background task is terminated
+            UIApplication.shared.endBackgroundTask(self.backgroundTask)
+            self.backgroundTask = .invalid
+        }
+    }
+
+    func endLegacyBackgroundTask() {
+        if backgroundTask != .invalid {
+            UIApplication.shared.endBackgroundTask(backgroundTask)
+            backgroundTask = .invalid
+        }
+    }
+
+        private var isObserving = false
+    
+    
+    @objc func screenDidConnect(notification: NSNotification) {
+        notifyListeners("screenOn", data: ["status": "on"])
+    }
+    
+    @objc func screenDidDisconnect(notification: NSNotification) {
+        notifyListeners("screenOff", data: ["status": "off"])
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: UIScreen.didConnectNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIScreen.didDisconnectNotification, object: nil)
     }
 }
