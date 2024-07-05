@@ -30,4 +30,10 @@ export declare class ScreenEventsWeb extends WebPlugin implements ScreenEventsPl
     stop(): Promise<{
         result: boolean;
     }>;
+    getTotalScreenTime(): Promise<{
+        result: string;
+    }>;
+    resetScreenTime(): Promise<{
+        result: string;
+    }>;
 }

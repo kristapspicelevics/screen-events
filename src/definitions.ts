@@ -21,4 +21,8 @@ export interface ScreenEventsPlugin {
   start(): Promise<{ result: boolean }>;
 
   stop(): Promise<{ result: boolean }>;
+
+  getTotalScreenTime(): Promise<{ result: string }>
+
+  resetScreenTime(): Promise<{ result: string  }>
 }

@@ -35,6 +35,12 @@ class ScreenEventsWeb extends core.WebPlugin {
     async stop() {
         throw new Error('Method not implemented.');
     }
+    async getTotalScreenTime() {
+        throw new Error('Method not implemented.');
+    }
+    async resetScreenTime() {
+        throw new Error('Method not implemented.');
+    }
 }
 
 var web = /*#__PURE__*/Object.freeze({

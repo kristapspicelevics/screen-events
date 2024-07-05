@@ -26,5 +26,11 @@ export class ScreenEventsWeb extends WebPlugin {
     async stop() {
         throw new Error('Method not implemented.');
     }
+    async getTotalScreenTime() {
+        throw new Error('Method not implemented.');
+    }
+    async resetScreenTime() {
+        throw new Error('Method not implemented.');
+    }
 }
 //# sourceMappingURL=web.js.map

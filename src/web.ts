@@ -36,4 +36,13 @@ export class ScreenEventsWeb extends WebPlugin implements ScreenEventsPlugin {
   async stop(): Promise<{ result: boolean }> {
     throw new Error('Method not implemented.');
   }
+
+  async getTotalScreenTime(): Promise<{ result: string }> {
+    throw new Error('Method not implemented.');
+  }
+
+  async resetScreenTime(): Promise<{ result: string  }> {
+    throw new Error('Method not implemented.');
+  }
+
 }

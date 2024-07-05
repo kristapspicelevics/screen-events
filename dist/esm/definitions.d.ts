@@ -35,4 +35,10 @@ export interface ScreenEventsPlugin {
     stop(): Promise<{
         result: boolean;
     }>;
+    getTotalScreenTime(): Promise<{
+        result: string;
+    }>;
+    resetScreenTime(): Promise<{
+        result: string;
+    }>;
 }

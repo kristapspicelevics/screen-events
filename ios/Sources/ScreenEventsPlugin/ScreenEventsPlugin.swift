@@ -25,9 +25,43 @@ public class ScreenEventsPlugin: CAPPlugin, CAPBridgedPlugin {
 
     private var isScreenOn = true
 
+    private var backgroundDate: Date?
+    private var totalForegroundTime: TimeInterval = 0
+
     override public func load() {
         NotificationCenter.default.addObserver(self, selector: #selector(screenStateDidChange(_:)), name: UIScreen.didConnectNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(screenStateDidChange(_:)), name: UIScreen.didDisconnectNotification, object: nil)
+    }
+
+    @objc private func appDidEnterBackground() {
+        backgroundDate = Date()
+    }
+
+    @objc private func appWillEnterForeground() {
+        if let backgroundDate = backgroundDate {
+            let timeSpent = Date().timeIntervalSince(backgroundDate)
+            totalForegroundTime += timeSpent
+        }
+    }
+
+    @objc func getTotalScreenTime(_ call: CAPPluginCall) {
+        call.resolve([
+            "totalScreenTime": totalForegroundTime
+        ])
+    }
+
+    @objc func resetScreenTime(_ call: CAPPluginCall) {
+        totalForegroundTime = 0
+        saveScreenTime()
+        call.resolve()
+    }
+
+    private func saveScreenTime() {
+        UserDefaults.standard.set(totalForegroundTime, forKey: "totalForegroundTime")
+    }
+
+    private func loadScreenTime() {
+        totalForegroundTime = UserDefaults.standard.double(forKey: "totalForegroundTime")
     }
 
     @objc private func screenStateDidChange(_ notification: Notification) {
