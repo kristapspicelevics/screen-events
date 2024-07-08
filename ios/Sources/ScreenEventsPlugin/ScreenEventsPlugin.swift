@@ -12,12 +12,14 @@ public class ScreenEventsPlugin: CAPPlugin, CAPBridgedPlugin {
     public let identifier = "ScreenEventsPlugin"
     public let jsName = "ScreenEvents"
     public let pluginMethods: [CAPPluginMethod] = [
-        CAPPluginMethod(name: "echo", returnType: CAPPluginReturnPromise)
-        CAPPluginMethod(name: "getTotalScreenTime", returnType: CAPPluginReturnPromise)
-        CAPPluginMethod(name: "resetScreenTime", returnType: CAPPluginReturnPromise)
-        CAPPluginMethod(name: "start", returnType: CAPPluginReturnPromise)
-        CAPPluginMethod(name: "stop", returnType: CAPPluginReturnPromise)
-        CAPPluginMethod(name: "isScreenOn", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "echo", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "getTotalScreenTime", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "resetScreenTime", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "start", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "stop", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "isScreenOn", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "screenDidConnect", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "screenDidDisconnect", returnType: CAPPluginReturnPromise)
     ]
     private let implementation = ScreenEvents()
 
