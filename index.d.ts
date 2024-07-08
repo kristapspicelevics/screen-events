@@ -9,4 +9,6 @@ declare module 'screen-events' {
   export function checkPermissions(): Promise<{ result: boolean }>;
   export function start(): void;
   export function stop(): void;
+  export function getTotalScreenTime(): Promise<{ result: string }>;
+  export function resetScreenTime(): Promise<{ result: string }>;
 }
