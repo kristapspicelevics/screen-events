@@ -13,6 +13,11 @@ public class ScreenEventsPlugin: CAPPlugin, CAPBridgedPlugin {
     public let jsName = "ScreenEvents"
     public let pluginMethods: [CAPPluginMethod] = [
         CAPPluginMethod(name: "echo", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "getTotalScreenTime", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "resetScreenTime", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "start", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "stop", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "isScreenOn", returnType: CAPPluginReturnPromise)
     ]
     private let implementation = ScreenEvents()
 
@@ -81,14 +86,6 @@ public class ScreenEventsPlugin: CAPPlugin, CAPBridgedPlugin {
     }
 
     private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
-
-    @objc func getUsageStats(_ call: CAPPluginCall) {
-        call.resolve()
-    }
-
-    @objc func getUsageEvents(_ call: CAPPluginCall) {
-        call.resolve()
-    }
 
     @objc func start(_ call: CAPPluginCall) {
         if #available(iOS 13.0, *) {
