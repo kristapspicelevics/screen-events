@@ -82,6 +82,14 @@ public class ScreenEventsPlugin: CAPPlugin, CAPBridgedPlugin {
 
     private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
 
+    @objc func getUsageStats(_ call: CAPPluginCall) {
+        call.resolve()
+    }
+
+    @objc func getUsageEvents(_ call: CAPPluginCall) {
+        call.resolve()
+    }
+
     @objc func start(_ call: CAPPluginCall) {
         if #available(iOS 13.0, *) {
             BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.yourcompany.backgroundkeepalive", using: nil) { task in
