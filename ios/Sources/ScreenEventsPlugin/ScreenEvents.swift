@@ -7,23 +7,23 @@ import Foundation
     }
 
     @objc public func getTotalScreenTime() -> String {
-        return
+        return ""
     }
 
-    @objc public func resetScreenTime() ->String {
-        return
+    @objc public func resetScreenTime() -> String {
+        return ""
     }
 
     @objc public func start() -> Bool {
-        return
+        return true
     }
 
     @objc public func stop() -> Bool {
-        return
+        return true
     }
 
     @objc public func isScreenOn() -> Bool {
-        return
+        return true
     }
 
     @objc public func screenDidConnect(_ value: String) -> String {
