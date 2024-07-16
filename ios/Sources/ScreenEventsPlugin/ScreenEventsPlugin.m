@@ -4,13 +4,13 @@
 
 // Define the plugin using the CAP_PLUGIN Macro, and
 // each method the plugin supports using the CAP_PLUGIN_METHOD macro.
-CAP_PLUGIN(PushNotificationsPlugin, "ScreenEvents",
-        CAPPluginMethod(name: echo, returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: getTotalScreenTime, returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: resetScreenTime, returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: start, returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: stop, returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: isScreenOn, returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: screenDidConnect, returnType: CAPPluginReturnPromise),
-        CAPPluginMethod(name: screenDidDisconnect, returnType: CAPPluginReturnPromise)
+CAP_PLUGIN(ScreenEventsPlugin, "ScreenEvents",
+    CAP_PLUGIN_METHOD( echo, CAPPluginReturnPromise);
+    CAP_PLUGIN_METHOD( getTotalScreenTime, CAPPluginReturnPromise);
+    CAP_PLUGIN_METHOD( resetScreenTime, CAPPluginReturnPromise);
+    CAP_PLUGIN_METHOD( start, CAPPluginReturnPromise);
+    CAP_PLUGIN_METHOD( stop, CAPPluginReturnPromise);
+    CAP_PLUGIN_METHOD( isScreenOn, CAPPluginReturnPromise);
+    CAP_PLUGIN_METHOD( screenDidConnect, CAPPluginReturnPromise);
+    CAP_PLUGIN_METHOD( screenDidDisconnect, CAPPluginReturnPromise);
 )
