@@ -20,6 +20,9 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 
 import java.util.List;
 
+import static android.app.AppOpsManager.MODE_ALLOWED;
+import static android.app.AppOpsManager.OPSTR_GET_USAGE_STATS;
+
 @CapacitorPlugin(name = "ScreenEvents")
 public class ScreenEventsPlugin extends Plugin {
 
