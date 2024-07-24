@@ -177,11 +177,21 @@ public class ScreenEventsPlugin extends Plugin {
     }
 
     private boolean hasUsageStatsPermission() {
-        UsageStatsManager usageStatsManager = (UsageStatsManager) getContext().getSystemService(Context.USAGE_STATS_SERVICE);
-        long endTime = System.currentTimeMillis();
-        long startTime = endTime - 1000 * 60;
-        List<UsageStats> stats = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime);
-        return (stats != null && !stats.isEmpty());
+        JSObject ret = new JSObject();
+        Context context = this.getContext();
+        AppOpsManager appOps = (AppOpsManager) context.getApplicationContext().getSystemService(Context.APP_OPS_SERVICE);
+        int mode = appOps.checkOpNoThrow(OPSTR_GET_USAGE_STATS, android.os.Process.myUid(), context.getApplicationContext().getPackageName());
+
+        boolean result_return = false;
+
+        if (mode == AppOpsManager.MODE_DEFAULT) {
+            result_return = (context.getApplicationContext().checkCallingOrSelfPermission(android.Manifest.permission.PACKAGE_USAGE_STATS) == PackageManager.PERMISSION_GRANTED);
+        } else {
+            result_return = (mode == MODE_ALLOWED);
+        }
+
+        ret.put("getPermissionStatus", result_return);
+        call.success(ret);
     }
 
     private void openUsageAccessSettings() {
