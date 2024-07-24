@@ -22,6 +22,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import android.app.AppOpsManager;
 
 import java.util.List;
 
@@ -187,8 +188,16 @@ public class ScreenEventsPlugin extends Plugin {
         // long startTime = endTime - 1000 * 60;
         // List<UsageStats> stats = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime);
         // return (stats != null && !stats.isEmpty());
-        int packagePermission = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.PACKAGE_USAGE_STATS);
-        return packagePermission == PackageManager.PERMISSION_GRANTED;
+        // int packagePermission = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.PACKAGE_USAGE_STATS);
+        // return packagePermission == PackageManager.PERMISSION_GRANTED;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            AppOpsManager appOps = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
+            int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
+                    android.os.Process.myUid(), context.getPackageName());
+            return mode == AppOpsManager.MODE_ALLOWED;
+        } else {
+            return false;
+        }
     }
 
     private void openUsageAccessSettings() {
