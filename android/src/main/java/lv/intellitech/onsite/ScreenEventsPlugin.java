@@ -18,6 +18,9 @@ import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+
 import java.util.List;
 
 @CapacitorPlugin(name = "ScreenEvents")
