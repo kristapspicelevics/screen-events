@@ -187,7 +187,7 @@ public class ScreenEventsPlugin extends Plugin {
         // long startTime = endTime - 1000 * 60;
         // List<UsageStats> stats = usageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, startTime, endTime);
         // return (stats != null && !stats.isEmpty());
-        int packagePermission = ContextCompat.checkSelfPermission(this, Manifest.permission.PACKAGE_USAGE_STATS);
+        int packagePermission = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.PACKAGE_USAGE_STATS);
         return packagePermission == PackageManager.PERMISSION_GRANTED;
     }
 
