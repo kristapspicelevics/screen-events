@@ -20,6 +20,8 @@ import com.getcapacitor.annotation.CapacitorPlugin;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import java.util.List;
 
