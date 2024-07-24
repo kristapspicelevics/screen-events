@@ -192,9 +192,9 @@ public class ScreenEventsPlugin extends Plugin {
         // int packagePermission = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.PACKAGE_USAGE_STATS);
         // return packagePermission == PackageManager.PERMISSION_GRANTED;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            AppOpsManager appOps = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
+            AppOpsManager appOps = (AppOpsManager) getContext().getSystemService(Context.APP_OPS_SERVICE);
             int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
-                    android.os.Process.myUid(), context.getPackageName());
+                    android.os.Process.myUid(), getContext().getPackageName());
             return mode == AppOpsManager.MODE_ALLOWED;
         } else {
             return false;
