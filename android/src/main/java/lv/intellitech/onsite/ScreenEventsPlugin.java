@@ -196,7 +196,11 @@ public class ScreenEventsPlugin extends Plugin {
             if (appOps != null) {
                 int mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
                         android.os.Process.myUid(), getContext().getPackageName());
-                return mode == AppOpsManager.MODE_ALLOWED;
+                if (mode == AppOpsManager.MODE_DEFAULT) {
+                    return getContext().checkCallingOrSelfPermission("android.permission.PACKAGE_USAGE_STATS") == PackageManager.PERMISSION_GRANTED;
+                } else {
+                    return mode == AppOpsManager.MODE_ALLOWED;
+                }
             } else {
                 Log.e("UsageStats", "AppOpsManager is null");
                 return false;
