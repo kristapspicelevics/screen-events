@@ -26,6 +26,7 @@ import android.app.AppOpsManager;
 import android.os.Build;
 
 import java.util.List;
+import android.util.Log;
 
 @CapacitorPlugin(name = "ScreenEvents")
 public class ScreenEventsPlugin extends Plugin {
