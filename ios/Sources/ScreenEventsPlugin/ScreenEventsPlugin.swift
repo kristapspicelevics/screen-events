@@ -1,7 +1,5 @@
 import Foundation
 import Capacitor
-import DeviceActivity
-import BackgroundTasks
 
 /**
  * Please read the Capacitor iOS Plugin Development Guide
