@@ -33,6 +33,10 @@ public class ScreenEventsPlugin extends Plugin {
 
     private ScreenEvents implementation = new ScreenEvents();
 
+    private static final String PREFS_NAME = "usage_stats_prefs";
+    private static final String PREF_KEY_PERMISSION_REQUESTED = "permission_requested";
+
+
     @PluginMethod
     public void echo(PluginCall call) {
         String value = call.getString("value");
@@ -213,9 +217,24 @@ public class ScreenEventsPlugin extends Plugin {
     }
 
     private void openUsageAccessSettings() {
-        Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        getContext().startActivity(intent);
+        SharedPreferences preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        boolean permissionRequested = preferences.getBoolean(PREF_KEY_PERMISSION_REQUESTED, false);
+        if (!permissionRequested) {
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putBoolean(PREF_KEY_PERMISSION_REQUESTED, true);
+            editor.apply();
+            Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            getContext().startActivity(intent);
+        }
+    }
+
+    @PluginMethod
+    public static void resetPermissionRequest(Context context) {
+        SharedPreferences preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putBoolean(PREF_KEY_PERMISSION_REQUESTED, false);
+        editor.apply();
     }
 
 }

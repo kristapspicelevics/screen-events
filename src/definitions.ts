@@ -25,4 +25,12 @@ export interface ScreenEventsPlugin {
   getTotalScreenTime(): Promise<{ result: string }>
 
   resetScreenTime(): Promise<{ result: string  }>
+
+    /**
+  * Checks permission once
+  *
+  * @since 0.0.2
+  */
+
+  resetPermissionRequest(): Promise<{ result: boolean }>;
 }

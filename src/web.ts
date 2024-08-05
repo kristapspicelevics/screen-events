@@ -45,4 +45,8 @@ export class ScreenEventsWeb extends WebPlugin implements ScreenEventsPlugin {
     throw new Error('Method not implemented.');
   }
 
+  async resetPermissionRequest(): Promise<{ result: boolean; }> {
+    throw new Error('Method not implemented.');
+  }
+
 }
