@@ -229,13 +229,4 @@ public class ScreenEventsPlugin extends Plugin {
             getContext().startActivity(intent);
         }
     }
-
-    @PluginMethod
-    public void resetPermissionRequest(Context context) {
-        SharedPreferences preferences = getContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = preferences.edit();
-        editor.putBoolean(PREF_KEY_PERMISSION_REQUESTED, false);
-        editor.apply();
-    }
-
 }
