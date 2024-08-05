@@ -218,7 +218,7 @@ public class ScreenEventsPlugin extends Plugin {
     }
 
     private void openUsageAccessSettings() {
-        SharedPreferences preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences preferences = getContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         boolean permissionRequested = preferences.getBoolean(PREF_KEY_PERMISSION_REQUESTED, false);
         if (!permissionRequested) {
             SharedPreferences.Editor editor = preferences.edit();
@@ -232,7 +232,7 @@ public class ScreenEventsPlugin extends Plugin {
 
     @PluginMethod
     public static void resetPermissionRequest(Context context) {
-        SharedPreferences preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences preferences = getContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putBoolean(PREF_KEY_PERMISSION_REQUESTED, false);
         editor.apply();
