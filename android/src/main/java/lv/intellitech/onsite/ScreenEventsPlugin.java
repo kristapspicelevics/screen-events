@@ -188,7 +188,7 @@ public class ScreenEventsPlugin extends Plugin {
             return;
         } else {
             JSObject ret = new JSObject();
-            boolean granted = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.PACKAGE_USAGE_STATS) == PackageManager.PERMISSION_GRANTED;
+            boolean granted = getContext().checkCallingOrSelfPermission("android.permission.PACKAGE_USAGE_STATS") == PackageManager.PERMISSION_GRANTED;
             ret.put("permission", granted);
             call.resolve(ret);
         }
