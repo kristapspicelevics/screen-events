@@ -182,20 +182,16 @@ public class ScreenEventsPlugin extends Plugin {
 
     @PluginMethod
     public void checkPermissions(PluginCall call) {
+        JSObject ret = new JSObject();
         if (!hasUsageStatsPermission()) {
             call.reject("Permission required");
+            ret.put("granted", false);
+            call.resolve(ret);
             openUsageAccessSettings();
             return;
         } else {
-            JSObject ret = new JSObject();
-            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.PACKAGE_USAGE_STATS) == PackageManager.PERMISSION_GRANTED) {
-                ret.put("granted", true);
-                call.resolve(ret);
-            } else {
-                // Request the camera permission if not granted
-                ret.put("granted", false);
-                call.resolve(ret);
-            }
+            ret.put("granted", true);
+            call.resolve(ret);
         }
     }
 
