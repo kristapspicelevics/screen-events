@@ -188,9 +188,14 @@ public class ScreenEventsPlugin extends Plugin {
             return;
         } else {
             JSObject ret = new JSObject();
-            boolean granted = getContext().checkCallingOrSelfPermission("android.permission.PACKAGE_USAGE_STATS") == PackageManager.PERMISSION_GRANTED;
-            ret.put("permission", granted);
-            call.resolve(ret);
+            if (ContextCompat.checkSelfPermission(getContext(), Manifest.permission.PACKAGE_USAGE_STATS) == PackageManager.PERMISSION_GRANTED) {
+                ret.put("granted", true);
+                call.resolve(ret);
+            } else {
+                // Request the camera permission if not granted
+                ret.put("granted", false);
+                call.resolve(ret);
+            }
         }
     }
 
