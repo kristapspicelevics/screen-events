@@ -186,6 +186,8 @@ public class ScreenEventsPlugin extends Plugin {
             call.reject("Permission required");
             openUsageAccessSettings();
             return;
+        } else {
+            call.resolve(true);
         }
     }
 
