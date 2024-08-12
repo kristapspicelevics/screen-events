@@ -188,7 +188,8 @@ public class ScreenEventsPlugin extends Plugin {
             return;
         } else {
             JSObject ret = new JSObject();
-            ret.put("permission", true);
+            boolean granted = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.PACKAGE_USAGE_STATS) == PackageManager.PERMISSION_GRANTED;
+            ret.put("permission", granted);
             call.resolve(ret);
         }
     }
