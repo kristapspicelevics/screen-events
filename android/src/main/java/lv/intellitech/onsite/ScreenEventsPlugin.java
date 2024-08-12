@@ -187,7 +187,9 @@ public class ScreenEventsPlugin extends Plugin {
             openUsageAccessSettings();
             return;
         } else {
-            call.resolve(true);
+            JSObject ret = new JSObject();
+            ret.put("permission", true);
+            call.resolve(ret);
         }
     }
 
