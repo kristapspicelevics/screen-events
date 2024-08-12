@@ -184,7 +184,6 @@ public class ScreenEventsPlugin extends Plugin {
     public void checkPermissions(PluginCall call) {
         JSObject ret = new JSObject();
         if (!hasUsageStatsPermission()) {
-            call.reject("Permission required");
             ret.put("granted", false);
             call.resolve(ret);
             openUsageAccessSettings();
