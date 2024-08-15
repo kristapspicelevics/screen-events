@@ -197,6 +197,8 @@ public class ScreenEventsPlugin extends Plugin {
     @PluginMethod
     public void requestPermissions(PluginCall call) {
         openUsageAccessSettings();
+        ret.put("openedPermission", true);
+        call.resolve(ret);
     }
 
     private boolean hasUsageStatsPermission() {

@@ -29,6 +29,9 @@ class ScreenEventsWeb extends core.WebPlugin {
     async checkPermissions() {
         throw new Error('Method not implemented.');
     }
+    async requestPermissions() {
+        throw new Error('Method not implemented.');
+    }
     async start() {
         throw new Error('Method not implemented.');
     }

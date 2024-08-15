@@ -29,6 +29,9 @@ export interface ScreenEventsPlugin {
     checkPermissions(): Promise<{
         result: boolean;
     }>;
+    requestPermissions(): Promise<{
+        result: boolean;
+    }>;
     start(): Promise<{
         result: boolean;
     }>;
