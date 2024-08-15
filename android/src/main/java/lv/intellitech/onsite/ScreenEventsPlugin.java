@@ -194,6 +194,11 @@ public class ScreenEventsPlugin extends Plugin {
         }
     }
 
+    @PluginMethod
+    public void requestPermissions(PluginCall call) {
+        openUsageAccessSettings();
+    }
+
     private boolean hasUsageStatsPermission() {
         // UsageStatsManager usageStatsManager = (UsageStatsManager) getContext().getSystemService(Context.USAGE_STATS_SERVICE);
         // long endTime = System.currentTimeMillis();
