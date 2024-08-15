@@ -7,6 +7,7 @@ declare module 'screen-events' {
   export function isScreenOn(): boolean;
   export function addListener(eventName: 'screenOn' | 'screenOff', listenerFunc: () => void): Promise<PluginListenerHandle> & PluginListenerHandle;
   export function checkPermissions(): Promise<{ result: boolean }>;
+  export function requestPermissions(): Promise<{ result: boolean }>;
   export function start(): void;
   export function stop(): void;
   export function getTotalScreenTime(): Promise<{ result: string }>;
