@@ -196,6 +196,7 @@ public class ScreenEventsPlugin extends Plugin {
 
     @PluginMethod
     public void requestPermissions(PluginCall call) {
+        JSObject ret = new JSObject();
         openUsageAccessSettings();
         ret.put("openedPermission", true);
         call.resolve(ret);
