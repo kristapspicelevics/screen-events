@@ -49,4 +49,8 @@ export class ScreenEventsWeb extends WebPlugin implements ScreenEventsPlugin {
     throw new Error('Method not implemented.');
   }
 
+  async removeAllListeners(): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
+
 }

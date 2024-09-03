@@ -39,4 +39,5 @@ export declare class ScreenEventsWeb extends WebPlugin implements ScreenEventsPl
     resetScreenTime(): Promise<{
         result: string;
     }>;
+    removeAllListeners(): Promise<void>;
 }

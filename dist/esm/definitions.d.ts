@@ -44,4 +44,5 @@ export interface ScreenEventsPlugin {
     resetScreenTime(): Promise<{
         result: string;
     }>;
+    removeAllListeners(): Promise<void>;
 }
