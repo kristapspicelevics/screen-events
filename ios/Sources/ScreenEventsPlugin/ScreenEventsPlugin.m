@@ -13,4 +13,5 @@ CAP_PLUGIN(ScreenEventsPlugin, "ScreenEvents",
     CAP_PLUGIN_METHOD( isScreenOn, CAPPluginReturnPromise);
     CAP_PLUGIN_METHOD( screenDidConnect, CAPPluginReturnPromise);
     CAP_PLUGIN_METHOD( screenDidDisconnect, CAPPluginReturnPromise);
+    CAP_PLUGIN_METHOD( removeAllListeners, CAPPluginReturnPromise);
 )
