@@ -1,6 +1,7 @@
 import Foundation
 import Capacitor
 import DeviceActivity
+import FamilyControls
 import BackgroundTasks
 
 /**
@@ -10,6 +11,9 @@ import BackgroundTasks
 @objc(ScreenEventsPlugin)
 public class ScreenEventsPlugin: CAPPlugin {
 
+    var totalScreenTime: TimeInterval = 0
+    var startTime: Date? = nil
+    
     private let implementation = ScreenEvents()
 
     @objc func echo(_ call: CAPPluginCall) {
@@ -25,8 +29,8 @@ public class ScreenEventsPlugin: CAPPlugin {
     private var totalForegroundTime: TimeInterval = 0
 
     override public func load() {
-        NotificationCenter.default.addObserver(self, selector: #selector(screenStateDidChange(_:)), name: UIScreen.didConnectNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(screenStateDidChange(_:)), name: UIScreen.didDisconnectNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(screenDidLock), name: UIApplication.protectedDataWillBecomeUnavailableNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(screenDidUnlock), name: UIApplication.protectedDataDidBecomeAvailableNotification, object: nil)
     }
 
     @objc private func appDidEnterBackground() {
@@ -47,9 +51,10 @@ public class ScreenEventsPlugin: CAPPlugin {
     }
 
     @objc func resetScreenTime(_ call: CAPPluginCall) {
-        totalForegroundTime = 0
+        totalScreenTime = 0
         saveScreenTime()
-        call.resolve()
+        startTime = nil
+        call.resolve(["screenEventsTimeReset": true])
     }
 
     private func saveScreenTime() {
@@ -61,12 +66,12 @@ public class ScreenEventsPlugin: CAPPlugin {
     }
 
     @objc private func screenStateDidChange(_ notification: Notification) {
-        if notification.name == UIScreen.didConnectNotification {
+        if notification.name == UIApplication.protectedDataDidBecomeAvailableNotification {
             isScreenOn = true
-            notifyListeners("screenOn", data: [:])
-        } else if notification.name == UIScreen.didDisconnectNotification {
+            notifyListeners("screenOn", data: ["screen":"on"])
+        } else if notification.name == UIApplication.protectedDataWillBecomeUnavailableNotification {
             isScreenOn = false
-            notifyListeners("screenOff", data: [:])
+            notifyListeners("screenOff", data: ["screen":"off"])
         }
     }
 
@@ -79,25 +84,41 @@ public class ScreenEventsPlugin: CAPPlugin {
     private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
 
     @objc func start(_ call: CAPPluginCall) {
-        if #available(iOS 13.0, *) {
-            BGTaskScheduler.shared.register(forTaskWithIdentifier: "com.yourcompany.backgroundkeepalive", using: nil) { task in
-                self.handleAppRefresh(task: task as! BGAppRefreshTask)
-            }
-            scheduleAppRefresh()
-        } else {
-            // For iOS 12 and below
-            self.startLegacyBackgroundTask()
+        print("screenEventsCurrent: ", totalScreenTime)
+        self.startTime = Date()
+        //NotificationCenter.default.addObserver(self, selector: #selector(screenDidLock), name: UIScreen.didDisconnectNotification, object: nil)
+        //NotificationCenter.default.addObserver(self, selector: #selector(screenDidUnlock), name: UIScreen.didConnectNotification, object: nil)
+        //NotificationCenter.default.addObserver(self, selector: #selector(screenDidLock), name: UIApplication.didEnterBackgroundNotification, object: nil)
+        //NotificationCenter.default.addObserver(self, selector: #selector(screenDidUnlock), name: UIApplication.willEnterForegroundNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(screenDidLock), name: UIApplication.protectedDataWillBecomeUnavailableNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(screenDidUnlock), name: UIApplication.protectedDataDidBecomeAvailableNotification, object: nil)
+        call.resolve(["screenEventsStarted":startTime])
+    }
+    
+    @objc func screenDidLock() {
+        print("screenEventsDidLock")
+        if let startTime = self.startTime {
+            self.totalScreenTime += Date().timeIntervalSince(startTime)
         }
-        call.resolve()
     }
 
+    @objc func screenDidUnlock() {
+        print("screenEventsDidUnlock")
+        self.startTime = Date()
+    }
+    
     @objc func stop(_ call: CAPPluginCall) {
-        if #available(iOS 13.0, *) {
-            BGTaskScheduler.shared.cancelAllTaskRequests()
-        } else {
-            self.endLegacyBackgroundTask()
+        if let startTime = self.startTime {
+            self.totalScreenTime += Date().timeIntervalSince(startTime)
         }
-        call.resolve()
+        
+        let stopTime = Date()
+        
+        NotificationCenter.default.removeObserver(self)
+        call.resolve([
+            "screenEventsTotalScreenTime": self.totalScreenTime,
+            "screenEventsStopped":stopTime
+        ])
     }
 
     @available(iOS 13.0, *)
@@ -144,8 +165,8 @@ public class ScreenEventsPlugin: CAPPlugin {
     }
 
     deinit {
-        NotificationCenter.default.removeObserver(self, name: UIScreen.didConnectNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIScreen.didDisconnectNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.protectedDataDidBecomeAvailableNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIApplication.protectedDataWillBecomeUnavailableNotification, object: nil)
     }
 
 }
