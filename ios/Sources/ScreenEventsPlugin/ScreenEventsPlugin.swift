@@ -121,7 +121,7 @@ public class ScreenEventsPlugin: CAPPlugin {
         ])
     }
 
-    @available(iOS 13.0, *)
+    @available(iOS 15.0, *)
     func scheduleAppRefresh() {
         let request = BGAppRefreshTaskRequest(identifier: "com.yourcompany.backgroundkeepalive")
         request.earliestBeginDate = Date(timeIntervalSinceNow: 15 * 60) // 15 minutes from now
@@ -132,7 +132,7 @@ public class ScreenEventsPlugin: CAPPlugin {
         }
     }
 
-    @available(iOS 13.0, *)
+    @available(iOS 15.0, *)
     func handleAppRefresh(task: BGAppRefreshTask) {
         scheduleAppRefresh()
         task.setTaskCompleted(success: true)
